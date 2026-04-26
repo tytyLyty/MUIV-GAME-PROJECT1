@@ -747,21 +747,32 @@ class Boss(Enemy):
                                         self.rect.centery + math.sin(math.radians(angle)) * 200))
                     bullets.add(bullet)
     
-    # Game Over
-    return show_gameover(screen, player)
-
-# Запуск игры
-if __name__ == "__main__":
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    pygame.display.set_caption("HeAVeYDr1v3r — Мега-версия")
-    clock = pygame.time.Clock()
-    
-    while True:
-        if not show_menu(screen):
-            break
+    def show_gameover(screen, player):
+        """Отображение экрана окончания игры"""
+        font_large = pygame.font.Font(None, 72)
+        font_small = pygame.font.Font(None, 36)
         
-        if not game():
-            break
-    
-    pygame.quit()
-    sys.exit()
+        overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+        overlay.set_alpha(128)
+        overlay.fill(BLACK)
+        screen.blit(overlay, (0, 0))
+        
+        game_over_text = font_large.render("GAME OVER", True, RED)
+        score_text = font_small.render(f"Score: {player.score}", True, WHITE)
+        restart_text = font_small.render("Press SPACE to restart or ESC to quit", True, WHITE)
+        
+        screen.blit(game_over_text, (SCREEN_WIDTH//2 - game_over_text.get_width()//2, SCREEN_HEIGHT//2 - 100))
+        screen.blit(score_text, (SCREEN_WIDTH//2 - score_text.get_width()//2, SCREEN_HEIGHT//2))
+        screen.blit(restart_text, (SCREEN_WIDTH//2 - restart_text.get_width()//2, SCREEN_HEIGHT//2 + 50))
+        
+        pygame.display.flip()
+        
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    return False
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        return False
+                    elif event.key == pygame.K_SPACE:
+                        return True
