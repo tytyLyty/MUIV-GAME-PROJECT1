@@ -776,3 +776,36 @@ class Boss(Enemy):
                         return False
                     elif event.key == pygame.K_SPACE:
                         return True
+    def game():
+    """Основная игровая функция"""
+    # Создание игровых объектов
+    player = Player()
+    all_sprites = pygame.sprite.Group()
+    enemies = pygame.sprite.Group()
+    bullets = pygame.sprite.Group()
+    enemy_bullets = pygame.sprite.Group()
+    powerups = pygame.sprite.Group()
+    
+    all_sprites.add(player)
+    
+    # Игровые переменные
+    score = 0
+    wave = 1
+    enemy_spawn_timer = 0
+    boss_spawned = False
+    
+    running = True
+    while running:
+        # Обработка событий
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    new_bullets = player.shoot()
+                    for bullet in new_bullets:
+                        all_sprites.add(bullet)
+                        bullets.add(bullet)
+        
+        # Обновление игрока
+        player.update()
