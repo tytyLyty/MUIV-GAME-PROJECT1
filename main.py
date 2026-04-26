@@ -809,3 +809,31 @@ class Boss(Enemy):
         
         # Обновление игрока
         player.update()
+
+        # Спавн врагов
+        enemy_spawn_timer += 1
+        if enemy_spawn_timer >= 120:  # Каждые 2 секунды
+            enemy_spawn_timer = 0
+            if len(enemies) < 8:
+                enemy_type = random.choice([EnemyType.CHASER, EnemyType.SHOOTER, EnemyType.TELEPORTER])
+                enemy = Enemy(enemy_type)
+                enemy.spawn_outside()
+                enemies.add(enemy)
+                all_sprites.add(enemy)
+        
+        # Спавн босса
+        if score > wave * 500 and not boss_spawned:
+            boss = Boss()
+            enemies.add(boss)
+            all_sprites.add(boss)
+            boss_spawned = True
+        
+        # Обновление врагов
+        for enemy in enemies:
+            enemy.update(player, enemies, enemy_bullets)
+            
+            # Враги стреляют
+            if hasattr(enemy, 'type') and enemy.type == EnemyType.SHOOTER and random.random() < 0.02:
+                bullet = EnemyBullet(enemy.rect.centerx, enemy.rect.centery, player.rect.center)
+                enemy_bullets.add(bullet)
+                all_sprites.add(bullet)
