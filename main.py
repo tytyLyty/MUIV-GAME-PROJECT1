@@ -892,3 +892,11 @@ class Boss(Enemy):
         
         # Отрисовка
         screen.fill(BLACK)
+        # Отрисовка всех спрайтов
+        for sprite in all_sprites:
+            if isinstance(sprite, Enemy):
+                sprite.draw(screen)
+            elif isinstance(sprite, Player):
+                sprite.draw(screen)
+            else:
+                screen.blit(sprite.image, sprite.rect)
