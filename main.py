@@ -900,3 +900,13 @@ class Boss(Enemy):
                 sprite.draw(screen)
             else:
                 screen.blit(sprite.image, sprite.rect)
+
+        # Отрисовка UI
+        font = pygame.font.Font(None, 36)
+        score_text = font.render(f"Score: {score}", True, WHITE)
+        health_text = font.render(f"Health: {player.health}", True, GREEN)
+        screen.blit(score_text, (10, 10))
+        screen.blit(health_text, (10, 50))
+        
+        pygame.display.flip()
+        clock.tick(60)
