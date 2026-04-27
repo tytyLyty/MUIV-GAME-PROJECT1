@@ -837,3 +837,30 @@ class Boss(Enemy):
                 bullet = EnemyBullet(enemy.rect.centerx, enemy.rect.centery, player.rect.center)
                 enemy_bullets.add(bullet)
                 all_sprites.add(bullet)
+                
+                # Обновление пуль
+        for bullet in bullets:
+            bullet.update()
+            if bullet.rect.bottom < 0:
+                bullet.kill()
+        
+        for bullet in enemy_bullets:
+            bullet.update()
+            if (bullet.rect.right < 0 or bullet.rect.left > SCREEN_WIDTH or
+                bullet.rect.bottom < 0 or bullet.rect.top > SCREEN_HEIGHT):
+                bullet.kill()
+        
+        # Проверка столкновений
+        # Пули игрока с врагами
+        for bullet in bullets:
+            hit_enemies = pygame.sprite.spritecollide(bullet, enemies, False)
+            for enemy in hit_enemies:
+                if enemy.hit():
+                    score += enemy.points
+                    enemy.kill()
+                    # Шанс выпадения усиления
+                    if random.random() < 0.1:
+                        powerup = PowerUp(enemy.rect.centerx, enemy.rect.centery)
+                        powerups.add(powerup)
+                        all_sprites.add(powerup)
+                bullet.kill()
