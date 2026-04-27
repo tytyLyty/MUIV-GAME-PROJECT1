@@ -864,3 +864,31 @@ class Boss(Enemy):
                         powerups.add(powerup)
                         all_sprites.add(powerup)
                 bullet.kill()
+
+                # Вражеские пули с игроком
+        hit_player = pygame.sprite.spritecollide(player, enemy_bullets, True)
+        if hit_player:
+            if player.hit():
+                # Обновление рекорда перед выходом
+                if score > HIGH_SCORE:
+                    HIGH_SCORE = score
+                    save_high_score(HIGH_SCORE)
+                return show_gameover(screen, player)
+        
+        # Враги с игроком
+        hit_enemies = pygame.sprite.spritecollide(player, enemies, False)
+        if hit_enemies:
+            if player.hit():
+                # Обновление рекорда перед выходом
+                if score > HIGH_SCORE:
+                    HIGH_SCORE = score
+                    save_high_score(HIGH_SCORE)
+                return show_gameover(screen, player)
+        
+        # Усиления с игроком
+        collected_powerups = pygame.sprite.spritecollide(player, powerups, True)
+        for powerup in collected_powerups:
+            player.add_powerup(powerup.type)
+        
+        # Отрисовка
+        screen.fill(BLACK)
