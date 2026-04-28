@@ -920,3 +920,5 @@ if __name__ == "__main__":
     result = game()
     if result == False:  # Выход из игры
         break
+    pygame.quit()
+    sys.exit()
