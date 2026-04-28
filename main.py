@@ -915,3 +915,8 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("HeAVeYDr1v3r — Мега-версия")
     clock = pygame.time.Clock()
+
+    # Запустить игру
+    result = game()
+    if result == False:  # Выход из игры
+        break
